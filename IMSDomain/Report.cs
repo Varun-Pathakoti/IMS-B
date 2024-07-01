@@ -9,8 +9,8 @@ namespace IMSDomain
     public class Report
     {
         public IEnumerable<Product> Product { get; set; }
-        public IEnumerable<Product> FastMovingProducts { get; set; }
-        public IEnumerable<Product> SlowMovingProducts { get; set; }
+        public IEnumerable<string> FastMovingProducts { get; set; }
+        public IEnumerable<string> SlowMovingProducts { get; set; }
     }
 
 }

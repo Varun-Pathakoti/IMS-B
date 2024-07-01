@@ -1,7 +1,12 @@
-
 using IMSBusinessLogic;
+using IMSBusinessLogic.MediatR.Handlers;
+using IMSBusinessLogic.MediatR.Queries;
 using IMSDataAccess;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Identity.Client;
+using System.Reflection;
 
 namespace InventoryManagementSystem
 {
@@ -16,7 +21,16 @@ namespace InventoryManagementSystem
                 opt.UseSqlServer(connStr);
             });
             builder.Services.AddScoped<IInventory, Inventory>();
+            
+            builder.Services.AddScoped<IEmail,Email>();
+            builder.Services.AddMediatR(typeof(GetAllProductsHandler).Assembly);
+            builder.Services.AddMediatR(typeof(GetByIdHandler).Assembly);
+            builder.Services.AddMediatR(typeof(CreateHandler).Assembly);
+            builder.Services.AddMediatR(typeof(UpdateHandler).Assembly);
+            builder.Services.AddMediatR(typeof(RecordSaleHandler).Assembly);
+            builder.Services.AddMediatR(typeof(GenerateReportHandler).Assembly);
 
+            //builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
             // Add services to the container.
 
             builder.Services.AddControllers();

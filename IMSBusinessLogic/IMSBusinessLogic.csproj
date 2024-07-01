@@ -7,7 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="IInventory.cs" />
+    <Compile Remove="Inventory.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Aspose.Email" Version="24.5.0" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="8.1.0" />
   </ItemGroup>
 
   <ItemGroup>

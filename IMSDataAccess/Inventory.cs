@@ -1,14 +1,11 @@
-﻿/*using Aspose.Email.Clients.Activity;
-using IMSDataAccess;
-using IMSDomain;
+﻿using IMSDomain;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
-namespace IMSBusinessLogic
+namespace IMSDataAccess
 {
     public class Inventory : IInventory
     {
@@ -101,9 +98,9 @@ namespace IMSBusinessLogic
                 return null;
             }
             return product;
-            
+
         }
-      
+
         public async Task<Report> GenerateReport()
         {
             // Fetch all products and sales asynchronously
@@ -119,8 +116,9 @@ namespace IMSBusinessLogic
 
             // Filter products for fast-moving products
             var fastMovingProducts = products
-                .Where(p => fastMovingProductIds.Contains(p.ProductID))
-                .ToList();
+    .Where(p => fastMovingProductIds.Contains(p.ProductID))
+    .Select(p => p.ProductName)
+    .ToList();
 
             // Identify slow-moving product IDs (bottom 5 by quantity sold)
             var slowMovingProductIds = sales
@@ -131,17 +129,15 @@ namespace IMSBusinessLogic
 
             // Filter products for slow-moving products
             var slowMovingProducts = products
-                .Where(p => slowMovingProductIds.Contains(p.ProductID))
+                .Where(p => slowMovingProductIds.Contains(p.ProductID)).Select(p => p.ProductName)
                 .ToList();
 
             // Return the results as specified in the method signature
             Report r = new Report();
             r.Product = products;
-                 r.FastMovingProducts = fastMovingProducts;
-                 r.SlowMovingProducts=slowMovingProducts;
+            r.FastMovingProducts = fastMovingProducts;
+            r.SlowMovingProducts = slowMovingProducts;
             return r;
         }
-
     }
-}
-*/
+ }
