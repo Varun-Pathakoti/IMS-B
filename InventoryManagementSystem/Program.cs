@@ -1,12 +1,8 @@
 using IMSBusinessLogic;
 using IMSBusinessLogic.MediatR.Handlers;
-using IMSBusinessLogic.MediatR.Queries;
 using IMSDataAccess;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Identity.Client;
-using System.Reflection;
 
 namespace InventoryManagementSystem
 {
