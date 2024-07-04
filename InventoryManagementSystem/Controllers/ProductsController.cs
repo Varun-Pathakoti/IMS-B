@@ -14,7 +14,6 @@ namespace InventoryManagementSystem.Controllers
     {
 
         private readonly IMediator mediator;
-
        
         public ProductsController(IMediator mediator)
         {
@@ -57,16 +56,22 @@ namespace InventoryManagementSystem.Controllers
             return Ok();
         }
         [HttpPut]
-        [Route("/recordsale/id/{id}/quantity/{quantity}")]
-        public async Task<IActionResult> Sale(int id,int quantity)
-        {
-            
-            var product =await mediator.Send(new RecordSaleQuery(id,quantity));
-            if (product.StockLevel < product.Threshold)
-            {
-                Email email = new Email();
-                await email.SendLowStockEmail("bbb@gmail.com", "Low Stock Alert", product.ProductName);
+        [Route("/recordsale")]
+        
+        public async Task<IActionResult> Sale([FromBody] List<Order> sale)
 
+        {
+            //var salesList = sale.Select(s => (s.prodId, s.quantity)).ToList();
+            var product =await mediator.Send(new RecordSaleQuery(sale));
+            foreach (var p in product)
+            {
+     
+                if (p.StockLevel < p.Threshold)
+                {
+                    Email email = new Email();
+                    await email.Emailmet("dasasaipooja@gmail.com", "Low Stock Alert", p.ProductName);
+
+                }
             }
 
             return Ok();
@@ -78,15 +83,8 @@ namespace InventoryManagementSystem.Controllers
             var k=await mediator.Send(new GenerateReportQuery());
 
             Email email = new Email();
-            var productsList = string.Join(", ", k.Product.Select(p => $"{p.ProductName} (Stock: {p.StockLevel})"));
-      
-            var fastMovingList = string.Join(", ", k.FastMovingProducts);
-            var slowMovingList = string.Join(", ", k.SlowMovingProducts);
-
-
-
-            var str= $"Products: {productsList}\nFast Moving Products: {fastMovingList}\nSlow Moving Products: {slowMovingList}";
-            await email.SendReportEmail("dasasaipooja@gmail.com", "Generate report", str);
+            
+            await email.Emailmet("dasasaipooja@gmail.com", "Generate report", k);
             return Ok(k);
         }
     }

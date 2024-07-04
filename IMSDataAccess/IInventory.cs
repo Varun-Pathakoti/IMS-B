@@ -9,7 +9,7 @@ namespace IMSDataAccess
         Task<Product> getbyId(int id);
         Task<Product> create(Product product);
         Task<Product> update(int id, int stock);
-        Task<Product> RecordSale(int ProductId, int Quantity);
-        Task<Report> GenerateReport();
+        Task<List<Product>> RecordSales(List<Order> sales);
+        Task<string> GenerateReport();
     }
 }

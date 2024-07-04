@@ -3,14 +3,13 @@ using MediatR;
 
 namespace IMSBusinessLogic.MediatR.Queries
 {
-    public class RecordSaleQuery:IRequest<Product>
+    public class RecordSaleQuery:IRequest<List<Product>>
     {
-        public int productid {  get; set; }
-        public int quantity { get; set; }
-        public RecordSaleQuery(int prodid,int quantity) 
+        public List<Order> sales { get; set; }
+
+        public RecordSaleQuery(List<Order> sales)
         {
-            this.productid = prodid;    
-            this.quantity = quantity;
+            this.sales = sales;
         }
     }
 }

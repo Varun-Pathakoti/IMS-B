@@ -5,7 +5,7 @@ using MediatR;
 
 namespace IMSBusinessLogic.MediatR.Handlers
 {
-    public class GenerateReportHandler : IRequestHandler<GenerateReportQuery,Report>
+    public class GenerateReportHandler : IRequestHandler<GenerateReportQuery,string>
     {
         private readonly IInventory _data;
 
@@ -14,7 +14,7 @@ namespace IMSBusinessLogic.MediatR.Handlers
             _data = data;
         }
 
-        async Task <Report> IRequestHandler<GenerateReportQuery, Report>.Handle(GenerateReportQuery request, CancellationToken cancellationToken)
+        async Task <string> IRequestHandler<GenerateReportQuery, string>.Handle(GenerateReportQuery request, CancellationToken cancellationToken)
         {
             var rep = await _data.GenerateReport();
             return rep;

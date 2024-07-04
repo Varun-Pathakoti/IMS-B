@@ -19,12 +19,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\DataAccess\" />
-    <Folder Include="Models\Entities\" />
+    <ProjectReference Include="..\IMSBusinessLogic\IMSBusinessLogic.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\IMSBusinessLogic\IMSBusinessLogic.csproj" />
+    <Folder Include="Models\" />
   </ItemGroup>
 
 </Project>

@@ -1,11 +1,13 @@
 ﻿using IMSDomain;
 using Microsoft.EntityFrameworkCore;
+using System.Net;
+using System.Net.Mail;
 namespace IMSDataAccess
 {
     public class Inventory : IInventory
     {
         private readonly ProductDbContext _db;
-
+        
 
         public Inventory(ProductDbContext db)
         {
@@ -53,86 +55,96 @@ namespace IMSDataAccess
                 return null;
             }
         }
-        public async Task<Product> RecordSale(int productId, int quantity)
+
+        public async Task<List<Product>> RecordSales(List<Order> sales)
         {
-            var product = await _db.Products.FindAsync(productId);
-            if (product != null)
+            var updatedProducts = new List<Product>();
+            foreach (var p in sales)
             {
-
-                product.StockLevel -= quantity;
-
-                var sale = await _db.Sales.FirstOrDefaultAsync(s => s.ProductId == productId);
-                if (sale != null)
+              
+                var product = await _db.Products.FindAsync(p.prodId);
+                if (product != null)
                 {
-                    //sale.ProductId = productId;
-                    sale.Quantity += quantity;
-                    sale.SaleDate = DateTime.UtcNow;
-                    //sale.ProductName = product.ProductName;
-                    _db.Sales.Update(sale);
+                    if (product.StockLevel < p.quantity)
+                    {
 
+                        Email email = new Email();
+                        await email.Emailmet("dasasaipooja@gmail.com", "out of stock", product.ProductName);
+                    }
+                    else
+                    {
+
+                        product.StockLevel -= p.quantity;
+                        updatedProducts.Add(product);
+
+                        var sale = await _db.Sales.FirstOrDefaultAsync(s => s.ProductId == p.prodId);
+                        if (sale != null)
+                        {
+
+                            sale.Quantity += p.quantity;
+                            sale.SaleDate = DateTime.UtcNow;
+
+                            _db.Sales.Update(sale);
+
+                        }
+                        else
+                        {
+                            var sale1 = new Sale
+                            {
+                                ProductId = p.prodId,
+                                Quantity = p.quantity,
+                                SaleDate = DateTime.UtcNow,
+                                ProductName = product.ProductName
+                            };
+
+                            _db.Sales.Add(sale1);
+                        }
+                        _db.Products.Update(product);
+
+                        await _db.SaveChangesAsync();
+
+                    }
                 }
                 else
                 {
-                    var sale1 = new Sale
-                    {
-                        ProductId = productId,
-                        Quantity = quantity,
-                        SaleDate = DateTime.UtcNow,
-                        ProductName = product.ProductName
-                    };
-
-                    _db.Sales.Add(sale1);
+                    return null;
                 }
-                _db.Products.Update(product);
-
-                await _db.SaveChangesAsync();
-
             }
-            else
-            {
-                return null;
-            }
-            return product;
+            return updatedProducts;
 
         }
 
-        public async Task<Report> GenerateReport()
+        public async Task<string> GenerateReport()
         {
-            // Fetch all products and sales asynchronously
-            var products = await _db.Products.ToListAsync();
+                    var products = await _db.Products.ToListAsync();
             var sales = await _db.Sales.ToListAsync();
 
-            // Identify fast-moving product IDs (top 5 by quantity sold)
             var fastMovingProductIds = sales
                 .OrderByDescending(s => s.Quantity)
                 .Take(5)
                 .Select(s => s.ProductId)
-                .ToList();
-
-            // Filter products for fast-moving products
+                .ToList();            
             var fastMovingProducts = products
-    .Where(p => fastMovingProductIds.Contains(p.ProductID))
-    .Select(p => p.ProductName)
-    .ToList();
+            .Where(p => fastMovingProductIds.Contains(p.ProductID))
+            .Select(p => p.ProductName)
+            .ToList();
 
-            // Identify slow-moving product IDs (bottom 5 by quantity sold)
             var slowMovingProductIds = sales
                 .OrderBy(s => s.Quantity)
                 .Take(5)
                 .Select(s => s.ProductId)
                 .ToList();
 
-            // Filter products for slow-moving products
             var slowMovingProducts = products
                 .Where(p => slowMovingProductIds.Contains(p.ProductID)).Select(p => p.ProductName)
                 .ToList();
+            var productsList = string.Join(", ", products.Select(p => $"{p.ProductName} (Stock: {p.StockLevel})"));
+            var fastMovingList = string.Join(", ", fastMovingProducts);
+            var slowMovingList = string.Join(", ", slowMovingProducts);
 
-            // Return the results as specified in the method signature
-            Report r = new Report();
-            r.Product = products;
-            r.FastMovingProducts = fastMovingProducts;
-            r.SlowMovingProducts = slowMovingProducts;
-            return r;
+            var str = $"Products: {productsList}\nFast Moving Products: {fastMovingList}\nSlow Moving Products: {slowMovingList}";
+            
+            return str;
         }
     }
  }

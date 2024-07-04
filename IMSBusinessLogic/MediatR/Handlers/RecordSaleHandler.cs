@@ -5,7 +5,7 @@ using MediatR;
 
 namespace IMSBusinessLogic.MediatR.Handlers
 {
-    public class RecordSaleHandler : IRequestHandler<RecordSaleQuery, Product>
+    public class RecordSaleHandler : IRequestHandler<RecordSaleQuery, List<Product>>
     {
         private readonly IInventory _data;
 
@@ -13,9 +13,9 @@ namespace IMSBusinessLogic.MediatR.Handlers
         {
             _data = data;
         }
-        public async Task<Product> Handle(RecordSaleQuery request, CancellationToken cancellationToken)
+        public async Task<List<Product>> Handle(RecordSaleQuery request, CancellationToken cancellationToken)
         {
-            var pro = await _data.RecordSale(request.productid, request.quantity);
+            var pro = await _data.RecordSales(request.sales);
             return pro;
         }
     }
