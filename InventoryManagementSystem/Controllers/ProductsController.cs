@@ -69,7 +69,7 @@ namespace InventoryManagementSystem.Controllers
                 if (p.StockLevel < p.Threshold)
                 {
                     Email email = new Email();
-                    await email.Emailmet("dasasaipooja@gmail.com", "Low Stock Alert", p.ProductName);
+                    await email.Emailmet("****", "Low Stock Alert", p.ProductName);
 
                 }
             }

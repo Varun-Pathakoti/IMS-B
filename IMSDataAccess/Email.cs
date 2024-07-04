@@ -12,8 +12,8 @@ namespace IMSDataAccess
     {
         public async Task<object> Emailmet(string ToEmail, string subject, string msg)
         {
-            var fromAddress = new System.Net.Mail.MailAddress("khandayraoshreshta@gmail.com", "Shreshta");
-            const string fromPassword = "hkqrzeirvrrhjxjq";
+            var fromAddress = new System.Net.Mail.MailAddress("***", "***");
+            const string fromPassword = "***";
 
             var smtp = new SmtpClient
             {
