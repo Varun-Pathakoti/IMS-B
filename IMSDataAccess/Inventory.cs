@@ -41,19 +41,25 @@ namespace IMSDataAccess
         }
         public async Task<Product> update(int id, int stock)
         {
-            var pro = await _db.Products.FindAsync(id);
-            if (pro != null)
+            if (stock < 0)
             {
-                pro.StockLevel = stock;
-                _db.Products.Update(pro);
-                await _db.SaveChangesAsync();
-                return pro;
-
+                throw new Exception("Value cannot be less than zero");
             }
-            else
-            {
-                return null;
-            }
+            
+            
+                var pro = await _db.Products.FindAsync(id);
+                if (pro == null)
+                {
+                    pro.StockLevel = stock;
+                    _db.Products.Update(pro);
+                    await _db.SaveChangesAsync();
+                    return pro;
+                }
+                else
+                {
+                    return null;
+                }
+            
         }
 
         public async Task<List<Product>> RecordSales(List<Order> sales)

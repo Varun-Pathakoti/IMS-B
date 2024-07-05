@@ -14,6 +14,7 @@ namespace InventoryManagementSystem.Controllers
     {
 
         private readonly IMediator mediator;
+
        
         public ProductsController(IMediator mediator)
         {
@@ -52,8 +53,12 @@ namespace InventoryManagementSystem.Controllers
         [Route("/update/{id}/{stock}")]
         public async Task<IActionResult> Update(int id,int stock)
         {
-             await mediator.Send(new UpdateCommand(id,stock));
-            return Ok();
+             var pro=await mediator.Send(new UpdateCommand(id,stock));
+            if (pro == null)
+            {
+                return NotFound();
+            }
+            return Ok(pro);
         }
         [HttpPut]
         [Route("/recordsale")]
@@ -69,7 +74,7 @@ namespace InventoryManagementSystem.Controllers
                 if (p.StockLevel < p.Threshold)
                 {
                     Email email = new Email();
-                    await email.Emailmet("****", "Low Stock Alert", p.ProductName);
+                    await email.Emailmet("dasasaipooja@gmail.com", "Low Stock Alert", p.ProductName);
 
                 }
             }
