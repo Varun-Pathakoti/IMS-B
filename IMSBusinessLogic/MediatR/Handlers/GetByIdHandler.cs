@@ -7,9 +7,9 @@ namespace IMSBusinessLogic.MediatR.Handlers
 {
     public class GetByIdHandler : IRequestHandler<GetByIdQuery, Product>
     {
-        private readonly IInventory _data;
+        private readonly IInventoryRepository _data;
 
-        public GetByIdHandler(IInventory data)
+        public GetByIdHandler(IInventoryRepository data)
         {
             _data = data;
         }

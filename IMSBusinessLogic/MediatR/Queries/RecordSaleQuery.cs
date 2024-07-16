@@ -3,7 +3,7 @@ using MediatR;
 
 namespace IMSBusinessLogic.MediatR.Queries
 {
-    public class RecordSaleQuery:IRequest<List<Product>>
+    public class RecordSaleQuery : IRequest<List<int>>
     {
         public List<Order> sales { get; set; }
 

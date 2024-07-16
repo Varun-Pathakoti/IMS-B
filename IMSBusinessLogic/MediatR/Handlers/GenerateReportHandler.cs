@@ -7,9 +7,9 @@ namespace IMSBusinessLogic.MediatR.Handlers
 {
     public class GenerateReportHandler : IRequestHandler<GenerateReportQuery,string>
     {
-        private readonly IInventory _data;
+        private readonly IInventoryRepository _data;
 
-        public GenerateReportHandler(IInventory data)
+        public GenerateReportHandler(IInventoryRepository data)
         {
             _data = data;
         }

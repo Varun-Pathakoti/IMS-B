@@ -2,14 +2,17 @@
 
 namespace IMSDataAccess
 {
-    public interface IInventory
+    public interface IInventoryRepository
     {
         Task<List<Product>> getAll();
+        Task<List<Sale>> getAllSale();
 
         Task<Product> getbyId(int id);
+        Task<Product> getByName(String name);
+        Task deleteById(int id);
         Task<Product> create(Product product);
         Task<Product> update(int id, int stock);
-        Task<List<Product>> RecordSales(List<Order> sales);
+        Task<List<int>> RecordSales(List<Order> sales);
         Task<string> GenerateReport();
     }
 }

@@ -5,11 +5,15 @@ using IMSDataAccess;
 using MediatR;
 using IMSBusinessLogic.MediatR.Queries;
 using IMSBusinessLogic.MediatR.Commands;
+using IMSDataAccess.Exceptions;
+using Microsoft.AspNetCore.Cors;
+using Microsoft.Identity.Client;
 
 namespace InventoryManagementSystem.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [EnableCors("AllowSpecificOrigin")]
     public class ProductsController: Controller
     {
 
@@ -33,12 +37,19 @@ namespace InventoryManagementSystem.Controllers
         [Route("{id}")]
         public async Task<IActionResult> Getproductpro(int id)
         {
-            var pro2 = await mediator.Send(new GetByIdQuery(id));
-            if (pro2 == null)
+            try
             {
-                return NotFound();
+                var pro2 = await mediator.Send(new GetByIdQuery(id));
+                return Ok(pro2);
             }
-            return Ok(pro2);
+            catch (ProductNotFoundException)
+            {
+                return Ok("product id is invalid");
+            }
+            catch (Exception)
+            {
+                return Ok("error");
+            }
         }
        [HttpPost]
         [Route("/create")]
@@ -53,33 +64,36 @@ namespace InventoryManagementSystem.Controllers
         [Route("/update/{id}/{stock}")]
         public async Task<IActionResult> Update(int id,int stock)
         {
-             var pro=await mediator.Send(new UpdateCommand(id,stock));
-            if (pro == null)
+            try
             {
-                return NotFound();
+                var pro = await mediator.Send(new UpdateCommand(id, stock));
+              
+                return Ok(pro);
             }
-            return Ok(pro);
+            catch(NegativeNumerException) 
+            {
+                return Ok("entered value should be positive");
+            }
+            catch(ProductNotFoundException)
+            {
+                return Ok("product not found");
+            }
+            catch (Exception)
+            {
+                return Ok("error");
+            }
         }
-        [HttpPut]
+        [HttpPost]
         [Route("/recordsale")]
-        
-        public async Task<IActionResult> Sale([FromBody] List<Order> sale)
+
+        public async Task<IActionResult> Sale(List<Order> sale)
 
         {
             //var salesList = sale.Select(s => (s.prodId, s.quantity)).ToList();
-            var product =await mediator.Send(new RecordSaleQuery(sale));
-            foreach (var p in product)
-            {
-     
-                if (p.StockLevel < p.Threshold)
-                {
-                    Email email = new Email();
-                    await email.Emailmet("dasasaipooja@gmail.com", "Low Stock Alert", p.ProductName);
+            var sales = await mediator.Send(new RecordSaleQuery(sale));
+            
 
-                }
-            }
-
-            return Ok();
+            return Ok(sales);
         }
         [HttpGet]
         [Route("/generatereport")]
@@ -91,6 +105,27 @@ namespace InventoryManagementSystem.Controllers
             
             await email.Emailmet("dasasaipooja@gmail.com", "Generate report", k);
             return Ok(k);
+        }
+        [HttpGet]
+        [Route("/salestable")]
+        public async Task<IActionResult> GetallSales()
+        {
+            var sales=await mediator.Send(new GetallsalesQuery());
+            return Ok(sales);
+        }
+        [HttpDelete]
+        [Route("/delete/{id}")]
+        public async Task<IActionResult> delete(int id)
+        {
+            await mediator.Send(new deleteByIdCommand(id));
+            return Ok();
+        }
+        [HttpGet]
+        [Route("/getbyname/{name}")]
+        public async Task<IActionResult> getByName(string name)
+        {
+            var product = await mediator.Send(new GetbynameQuery(name));
+            return Ok(product);
         }
     }
 }

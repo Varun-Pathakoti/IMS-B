@@ -5,11 +5,13 @@ VisualStudioVersion = 17.8.34511.84
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InventoryManagementSystem", "InventoryManagementSystem\InventoryManagementSystem.csproj", "{89D56114-351D-4C90-B593-1A4641015C7A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IMSDomain", "IMSDomain\IMSDomain.csproj", "{12E1B5E2-33DB-4AAF-B879-21C5454A58E3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IMSDomain", "IMSDomain\IMSDomain.csproj", "{12E1B5E2-33DB-4AAF-B879-21C5454A58E3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IMSBusinessLogic", "IMSBusinessLogic\IMSBusinessLogic.csproj", "{3454DD61-5815-4F46-94ED-C1284A2B6F41}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IMSBusinessLogic", "IMSBusinessLogic\IMSBusinessLogic.csproj", "{3454DD61-5815-4F46-94ED-C1284A2B6F41}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IMSDataAccess", "IMSDataAccess\IMSDataAccess.csproj", "{7ED0B372-5E9A-4264-BF65-2186C6318D0C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IMSDataAccess", "IMSDataAccess\IMSDataAccess.csproj", "{7ED0B372-5E9A-4264-BF65-2186C6318D0C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IMSTest", "IMSTest\IMSTest.csproj", "{CD9AF422-B393-47DF-B6CA-1C918B30CF74}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{7ED0B372-5E9A-4264-BF65-2186C6318D0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7ED0B372-5E9A-4264-BF65-2186C6318D0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7ED0B372-5E9A-4264-BF65-2186C6318D0C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CD9AF422-B393-47DF-B6CA-1C918B30CF74}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD9AF422-B393-47DF-B6CA-1C918B30CF74}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD9AF422-B393-47DF-B6CA-1C918B30CF74}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD9AF422-B393-47DF-B6CA-1C918B30CF74}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -16,7 +16,7 @@ namespace InventoryManagementSystem
             {
                 opt.UseSqlServer(connStr);
             });
-            builder.Services.AddScoped<IInventory, Inventory>();
+            builder.Services.AddScoped<IInventoryRepository, InventoryRepository>();
             
             builder.Services.AddScoped<IEmail,Email>();
             builder.Services.AddMediatR(typeof(GetAllProductsHandler).Assembly);
@@ -28,6 +28,17 @@ namespace InventoryManagementSystem
 
             //builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
             // Add services to the container.
+
+            //add cors
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowSpecificOrigin",
+                    builder => builder.WithOrigins("http://localhost:4200")
+                                      .AllowAnyMethod()
+                                      .AllowAnyHeader());
+            });
+
+
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -44,6 +55,8 @@ namespace InventoryManagementSystem
             }
 
             app.UseHttpsRedirection();
+
+            app.UseCors("AllowSpecificOrigin");
 
             app.UseAuthorization();
 

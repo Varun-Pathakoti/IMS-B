@@ -7,9 +7,9 @@ namespace IMSBusinessLogic.MediatR.Handlers
 {
     public class CreateHandler : IRequestHandler<CreateCommand, Product>
     {
-        private readonly IInventory _data;
+        private readonly IInventoryRepository _data;
 
-        public CreateHandler(IInventory data)
+        public CreateHandler(IInventoryRepository data)
         {
             _data = data;
         }
