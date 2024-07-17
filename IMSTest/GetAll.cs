@@ -1,5 +1,6 @@
 ﻿using IMSDataAccess;
 using IMSDomain;
+using IMSDomain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

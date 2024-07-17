@@ -1,4 +1,4 @@
-﻿using IMSDomain;
+﻿using IMSDomain.Entities;
 using MediatR;
 using Microsoft.Data.SqlClient;
 using System;

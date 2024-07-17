@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-
-using IMSDomain;
+using IMSDomain.Entities;
 
 namespace IMSDataAccess
 {

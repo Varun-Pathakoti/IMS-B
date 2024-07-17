@@ -1,5 +1,6 @@
 ﻿using IMSDataAccess.Exceptions;
-using IMSDomain;
+using IMSDomain.DTO;
+using IMSDomain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
 using System.Net.Mail;
@@ -181,6 +182,34 @@ namespace IMSDataAccess
             var str = $"Products: {productsList}\nFast Moving Products: {fastMovingList}\nSlow Moving Products: {slowMovingList}";
             
             return str;
+        }
+        
+        public async Task<Product> UpdateProduct(int id, UpdateProductDTO product)
+        {
+            var _product = await getbyId(id);
+            if(product.Description != null && product.Description.Length!=0) 
+            {
+                _product.Description = product.Description;
+            }
+            if(product.ProductName != null && product.ProductName.Length!=0)
+            {
+                _product.ProductName = product.ProductName;
+            }
+            if(product.Price != null &&product.Price>0)
+            {
+                _product.Price = product.Price;
+            }
+            if (product.Threshold != null && product.Threshold > 0)
+            {
+                _product.Threshold = product.Threshold;
+            }
+            if (_product.StockLevel != null && product.StockLevel > 0)
+            {
+                _product.StockLevel = product.StockLevel;
+            }
+            _db.Products.Update(_product);
+            await _db.SaveChangesAsync();
+            return _product;
         }
     }
  }

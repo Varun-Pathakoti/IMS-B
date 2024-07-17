@@ -1,4 +1,5 @@
-﻿using IMSDomain;
+﻿using IMSDomain.DTO;
+using IMSDomain.Entities;
 
 namespace IMSDataAccess
 {
@@ -14,5 +15,6 @@ namespace IMSDataAccess
         Task<Product> update(int id, int stock);
         Task<List<int>> RecordSales(List<Order> sales);
         Task<string> GenerateReport();
+        Task<Product> UpdateProduct(int id , UpdateProductDTO product);
     }
 }

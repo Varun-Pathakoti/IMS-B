@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using IMSBusinessLogic;
-using IMSDomain;
 using IMSDataAccess;
 using MediatR;
 using IMSBusinessLogic.MediatR.Queries;
@@ -8,18 +7,20 @@ using IMSBusinessLogic.MediatR.Commands;
 using IMSDataAccess.Exceptions;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.Identity.Client;
+using IMSDomain.DTO;
+using IMSDomain.Entities;
 
 namespace InventoryManagementSystem.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     [EnableCors("AllowSpecificOrigin")]
-    public class ProductsController: Controller
+    public class ProductsController : Controller
     {
 
         private readonly IMediator mediator;
 
-       
+
         public ProductsController(IMediator mediator)
         {
             this.mediator = mediator;
@@ -29,7 +30,7 @@ namespace InventoryManagementSystem.Controllers
         [HttpGet]
         public async Task<IActionResult> Getallpro()
         {
-            var pro1=await mediator.Send(new GetAllProductsQuery());
+            var pro1 = await mediator.Send(new GetAllProductsQuery());
             //var pro1 =await _Inventory.getAll();
             return Ok(pro1);
         }
@@ -51,30 +52,30 @@ namespace InventoryManagementSystem.Controllers
                 return Ok("error");
             }
         }
-       [HttpPost]
+        [HttpPost]
         [Route("/create")]
         public async Task<IActionResult> Create([FromBody] Product prod)
         {
-            var pro4 = await mediator.Send(new CreateCommand(prod.ProductName,prod.Description,prod.Price,prod.Threshold,prod.StockLevel));
+            var pro4 = await mediator.Send(new CreateCommand(prod.ProductName, prod.Description, prod.Price, prod.Threshold, prod.StockLevel));
             return Ok(pro4);
-            
+
 
         }
         [HttpPut]
         [Route("/update/{id}/{stock}")]
-        public async Task<IActionResult> Update(int id,int stock)
+        public async Task<IActionResult> Update(int id, int stock)
         {
             try
             {
                 var pro = await mediator.Send(new UpdateCommand(id, stock));
-              
+
                 return Ok(pro);
             }
-            catch(NegativeNumerException) 
+            catch (NegativeNumerException)
             {
                 return Ok("entered value should be positive");
             }
-            catch(ProductNotFoundException)
+            catch (ProductNotFoundException)
             {
                 return Ok("product not found");
             }
@@ -91,7 +92,7 @@ namespace InventoryManagementSystem.Controllers
         {
             //var salesList = sale.Select(s => (s.prodId, s.quantity)).ToList();
             var sales = await mediator.Send(new RecordSaleQuery(sale));
-            
+
 
             return Ok(sales);
         }
@@ -99,10 +100,10 @@ namespace InventoryManagementSystem.Controllers
         [Route("/generatereport")]
         public async Task<IActionResult> GenRep()
         {
-            var k=await mediator.Send(new GenerateReportQuery());
+            var k = await mediator.Send(new GenerateReportQuery());
 
             Email email = new Email();
-            
+
             await email.Emailmet("dasasaipooja@gmail.com", "Generate report", k);
             return Ok(k);
         }
@@ -110,7 +111,7 @@ namespace InventoryManagementSystem.Controllers
         [Route("/salestable")]
         public async Task<IActionResult> GetallSales()
         {
-            var sales=await mediator.Send(new GetallsalesQuery());
+            var sales = await mediator.Send(new GetallsalesQuery());
             return Ok(sales);
         }
         [HttpDelete]
@@ -126,6 +127,14 @@ namespace InventoryManagementSystem.Controllers
         {
             var product = await mediator.Send(new GetbynameQuery(name));
             return Ok(product);
+        }
+
+        [HttpPut]
+        [Route("/update/{id}")]
+        public async Task<IActionResult> UpdateProuct(int id, UpdateProductDTO product)
+        {
+            var _product = await mediator.Send(new UpdateProductCommand(id, product));
+            return Ok(_product);
         }
     }
 }

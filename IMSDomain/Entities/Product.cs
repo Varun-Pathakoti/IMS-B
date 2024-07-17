@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace IMSDomain
+namespace IMSDomain.Entities
 {
     public class Product
     {
@@ -10,7 +10,7 @@ namespace IMSDomain
         public string ProductName { get; set; }
         [MaxLength(1000)]
         public string Description { get; set; }
-        [Required,Range(0,1000000, ErrorMessage ="Price cannot be negative.")]
+        [Required, Range(0, 1000000, ErrorMessage = "Price cannot be negative.")]
         public float Price { get; set; }
         [Required]
         [Range(0, int.MaxValue, ErrorMessage = "Threshold cannot be negative.")]

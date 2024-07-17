@@ -1,6 +1,7 @@
 using IMSDataAccess;
 using IMSDataAccess.Exceptions;
 using IMSDomain;
+using IMSDomain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace IMSTest

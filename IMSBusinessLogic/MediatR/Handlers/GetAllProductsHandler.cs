@@ -1,7 +1,7 @@
 ﻿using IMSBusinessLogic.MediatR.Queries;
 using MediatR;
-using IMSDomain;
 using IMSDataAccess;
+using IMSDomain.Entities;
 
 namespace IMSBusinessLogic.MediatR.Handlers
 {

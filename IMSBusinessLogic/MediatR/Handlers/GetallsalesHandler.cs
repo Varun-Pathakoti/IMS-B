@@ -1,6 +1,6 @@
 ﻿using IMSBusinessLogic.MediatR.Queries;
 using IMSDataAccess;
-using IMSDomain;
+using IMSDomain.Entities;
 using MediatR;
 using System;
 using System.Collections.Generic;
