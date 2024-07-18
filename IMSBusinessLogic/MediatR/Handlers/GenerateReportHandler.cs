@@ -16,8 +16,8 @@ namespace IMSBusinessLogic.MediatR.Handlers
 
         async Task <string> IRequestHandler<GenerateReportQuery, string>.Handle(GenerateReportQuery request, CancellationToken cancellationToken)
         {
-            var rep = await _data.GenerateReport();
-            return rep;
+            var report = await _data.GenerateReport();
+            return report;
         }
     }
 }

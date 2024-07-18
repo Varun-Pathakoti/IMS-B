@@ -19,7 +19,7 @@ namespace IMSBusinessLogic.MediatR.Handlers
         }
         public async Task<Product> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
         {
-            var _product = await _data.UpdateProduct(request.id, request.product);
+            var _product = await _data.UpdateProduct(request.Id, request.product);
             return _product;
         }
     }

@@ -29,7 +29,7 @@ namespace IMSTest
             context.SaveChanges();
             var inventory = new InventoryRepository(context);
             // Act
-            var result = await inventory.getbyId(1);
+            var result = await inventory.GetById(1);
 
 
             // Assert
@@ -52,7 +52,7 @@ namespace IMSTest
             // Assert
             await Assert.ThrowsExceptionAsync<ProductNotFoundException>(async()=>
             {
-                await inventory.getbyId(1);
+                await inventory.GetById(1);
             });
         }
     }

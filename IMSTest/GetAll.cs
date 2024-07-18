@@ -33,7 +33,7 @@ namespace IMSTest
             var inventory = new InventoryRepository(context);
 
             // Act
-            var result = await inventory.getAll();
+            var result = await inventory.GetAll();
 
             // Assert
             Assert.AreEqual(2, result.Count);

@@ -16,8 +16,8 @@ namespace IMSBusinessLogic.MediatR.Handlers
 
         public async Task<List<int>> Handle(RecordSaleQuery request, CancellationToken cancellationToken)
         {
-            var pro = await _data.RecordSales(request.sales);
-            return pro;
+            var product = await _data.RecordSales(request.sales);
+            return product;
         }
     }
 }

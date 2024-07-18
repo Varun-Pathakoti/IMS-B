@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace IMSBusinessLogic.MediatR.Handlers
 {
-    public class deleteByIdHandler : IRequestHandler<deleteByIdCommand>
+    public class deleteByIdHandler : IRequestHandler<DeleteByIdCommand>
     {
         private readonly IInventoryRepository data;
         public deleteByIdHandler(IInventoryRepository data)
@@ -17,9 +17,9 @@ namespace IMSBusinessLogic.MediatR.Handlers
             this.data = data;
         }
 
-        public async Task<Unit> Handle(deleteByIdCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(DeleteByIdCommand request, CancellationToken cancellationToken)
         {
-            await data.deleteById(request.id);
+            await data.DeleteById(request.Id);
             return Unit.Value;
         }
 

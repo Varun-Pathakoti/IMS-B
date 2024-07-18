@@ -29,7 +29,7 @@ namespace IMSTest
             var newProduct = new Product { ProductName = "NewProduct", Description = "NewDescription", StockLevel = 15, Price = 150, Threshold = 7 };
 
             // Act
-            var result = await inventory.create(newProduct);
+            var result = await inventory.Create(newProduct);
 
             // Assert
             Assert.AreEqual(1, context.Products.Count());

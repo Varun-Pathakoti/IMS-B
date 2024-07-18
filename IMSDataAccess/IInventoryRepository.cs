@@ -5,16 +5,17 @@ namespace IMSDataAccess
 {
     public interface IInventoryRepository
     {
-        Task<List<Product>> getAll();
-        Task<List<Sale>> getAllSale();
+        Task<List<Product>> GetAll();
+        Task<List<Sale>> GetAllSale();
 
-        Task<Product> getbyId(int id);
-        Task<Product> getByName(String name);
-        Task deleteById(int id);
-        Task<Product> create(Product product);
-        Task<Product> update(int id, int stock);
+        Task<Product> GetById(int id);
+        Task<Product> GetByName(String name);
+        Task DeleteById(int id);
+        Task<Product> Create(Product product);
+        Task<Product> Update(int id, int stock);
         Task<List<int>> RecordSales(List<Order> sales);
         Task<string> GenerateReport();
         Task<Product> UpdateProduct(int id , UpdateProductDTO product);
+        Task AddInSale(Product product, Order orderedProduct);
     }
 }

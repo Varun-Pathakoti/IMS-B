@@ -18,7 +18,7 @@ namespace IMSDataAccess
 
 
 
-        public async Task<Product> getbyId(int id)
+        public async Task<Product> GetById(int id)
         {
             var product= await _db.Products.SingleOrDefaultAsync(p => p.ProductID == id);
             if(product == null)
@@ -27,32 +27,31 @@ namespace IMSDataAccess
             }
             return product;
         }
-        public async Task<List<Sale>> getAllSale()
+        public async Task<List<Sale>> GetAllSale()
         {
             var sales=await _db.Sales.ToListAsync();
             return sales;
         }
 
-        public async Task<List<Product>> getAll()
-        {
-            //var prd = await getbyId(1);
-            var product = await _db.Products.ToListAsync();//asnotracking
+        public async Task<List<Product>> GetAll()
+        { 
+            var product = await _db.Products.ToListAsync(); //asnotracking
             return product;
         }
-        public async Task<Product> create(Product product)
+        public async Task<Product> Create(Product product)
         {
-            Product p = new Product();
-            p.Description = product.Description;
-            p.ProductName = product.ProductName;
+            Product _product = new Product();
+            _product.Description = product.Description;
+            _product.ProductName = product.ProductName;
             // p.ProductID = product.ProductID;
-            p.StockLevel = product.StockLevel;
-            p.Price = product.Price;
-            p.Threshold = product.Threshold;
-            _db.Add(p);
+            _product.StockLevel = product.StockLevel;
+            _product.Price = product.Price;
+            _product.Threshold = product.Threshold;
+            _db.Add(_product);
             await _db.SaveChangesAsync();
             return product;
         }
-        public async Task<Product> update(int id, int stock)
+        public async Task<Product> Update(int id, int stock)
         {
             if (stock < 0)
             {
@@ -60,7 +59,7 @@ namespace IMSDataAccess
             }
 
 
-            var product = await getbyId(id);
+            var product = await GetById(id);
              
             product.StockLevel = stock;
             _db.Products.Update(product);
@@ -74,20 +73,19 @@ namespace IMSDataAccess
         {
             var updatedProducts = new List<Product>();
             var outOfStockProducts = new List<int>();
-            foreach (var p in sales)
+            foreach (var orderedProduct in sales)
             {
 
-                var product = await _db.Products.FindAsync(p.prodId);
-                if (product.StockLevel < p.quantity)
+                var product = await _db.Products.FindAsync(orderedProduct.prodId);
+                if (product.StockLevel < orderedProduct.quantity)
                 {
                     outOfStockProducts.Add(product.ProductID);
-                    //Email email = new Email();
-                    //await email.Emailmet("dasasaipooja@gmail.com", "out of stock", product.ProductName);
+                    
                 }
                 else
                 {
 
-                    product.StockLevel -= p.quantity;
+                    product.StockLevel -= orderedProduct.quantity;
                     updatedProducts.Add(product);
 
                     if (product.StockLevel < product.Threshold)
@@ -96,29 +94,8 @@ namespace IMSDataAccess
                         await email.Emailmet("dasasaipooja@gmail.com", "Low Stock Alert", product.ProductName);
 
                     }
-
-                    var sale = await _db.Sales.FirstOrDefaultAsync(s => s.ProductId == p.prodId);
-                    if (sale != null)
-                    {
-
-                        sale.Quantity += p.quantity;
-                        sale.SaleDate = DateTime.UtcNow;
-
-                        _db.Sales.Update(sale);
-
-                    }
-                    else
-                    {
-                        var sale1 = new Sale
-                        {
-                            ProductId = p.prodId,
-                            Quantity = p.quantity,
-                            SaleDate = DateTime.UtcNow,
-                            ProductName = product.ProductName
-                        };
-
-                        _db.Sales.Add(sale1);
-                    }
+                    await AddInSale(product, orderedProduct);
+                    
                     _db.Products.Update(product);
 
                     await _db.SaveChangesAsync();
@@ -132,15 +109,15 @@ namespace IMSDataAccess
 
         }
 
-        public async Task deleteById(int id)
+        public async Task DeleteById(int id)
         {
-            var product = await getbyId(id);
+            var product = await GetById(id);
 
             _db.Products.Remove(product);
             _db.SaveChanges();
         }
 
-        public async Task<Product> getByName(String name)
+        public async Task<Product> GetByName(String name)
         {
             var product = _db.Products.FirstOrDefault(s=>s.ProductName == name);
             if (product == null)
@@ -186,7 +163,7 @@ namespace IMSDataAccess
         
         public async Task<Product> UpdateProduct(int id, UpdateProductDTO product)
         {
-            var _product = await getbyId(id);
+            var _product = await GetById(id);
             if(product.Description != null && product.Description.Length!=0) 
             {
                 _product.Description = product.Description;
@@ -211,5 +188,33 @@ namespace IMSDataAccess
             await _db.SaveChangesAsync();
             return _product;
         }
+
+        public async Task AddInSale(Product product,Order orderedProduct)
+        {
+            var sale = await _db.Sales.FirstOrDefaultAsync(s => s.ProductId == orderedProduct.prodId);
+            if (sale != null)
+            {
+
+                sale.Quantity += orderedProduct.quantity;
+                sale.SaleDate = DateTime.UtcNow;
+
+                _db.Sales.Update(sale);
+
+            }
+            else
+            {
+                var sale1 = new Sale
+                {
+                    ProductId = orderedProduct.prodId,
+                    Quantity = orderedProduct.quantity,
+                    SaleDate = DateTime.UtcNow,
+                    ProductName = product.ProductName
+                };
+
+                _db.Sales.Add(sale1);
+            }
+            await _db.SaveChangesAsync();
+        }
+
     }
  }

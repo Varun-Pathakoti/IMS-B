@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace IMSBusinessLogic.MediatR.Queries
 {
-    public class GetallsalesQuery:IRequest<List<Sale>>
+    public class GetallSalesQuery:IRequest<List<Sale>>
     {
     }
 }

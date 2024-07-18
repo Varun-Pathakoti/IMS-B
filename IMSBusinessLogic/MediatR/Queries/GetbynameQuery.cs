@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 
 namespace IMSBusinessLogic.MediatR.Queries
 {
-    public class GetbynameQuery:IRequest<Product>
+    public class GetByNameQuery:IRequest<Product>
     {
         public string name {  get; set; }
-        public GetbynameQuery(string name) { 
+        public GetByNameQuery(string name) { 
             this.name = name;
         }
     }

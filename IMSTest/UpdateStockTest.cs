@@ -32,7 +32,7 @@ namespace IMSTest
             var inventory = new InventoryRepository(context);
 
             // Act
-            var result = await inventory.update(1, 20);
+            var result = await inventory.Update(1, 20);
 
             // Assert
             Assert.IsNotNull(result);
@@ -51,7 +51,7 @@ namespace IMSTest
 
             await Assert.ThrowsExceptionAsync<ProductNotFoundException>(async () =>
             {
-                await inventory.getbyId(1);
+                await inventory.GetById(1);
             });
 
         }

@@ -10,9 +10,9 @@ namespace IMSBusinessLogic.MediatR.Commands
         public int StockLevel { get; set; }
         public float Price { get; set; }
         public int Threshold { get; set; }
-        public CreateCommand(string Name, string desc, float price, int thresh, int stock)
+        public CreateCommand(string name, string desc, float price, int thresh, int stock)
         {
-            this.ProductName = Name;
+            this.ProductName = name;
             this.Description = desc;
             this.Price = price;
             this.Threshold = thresh;

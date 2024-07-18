@@ -24,7 +24,7 @@ namespace IMSBusinessLogic.MediatR.Handlers
                 StockLevel = request.StockLevel,
             };
 
-            var createdProduct = await _data.create(product);
+            var createdProduct = await _data.Create(product);
 
             return createdProduct;
         }

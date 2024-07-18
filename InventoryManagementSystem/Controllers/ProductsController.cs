@@ -28,36 +28,43 @@ namespace InventoryManagementSystem.Controllers
 
         //public List<Product>
         [HttpGet]
-        public async Task<IActionResult> Getallpro()
+        public async Task<IActionResult> GetAllProducts()
         {
-            var pro1 = await mediator.Send(new GetAllProductsQuery());
+            var product = await mediator.Send(new GetAllProductsQuery());
             //var pro1 =await _Inventory.getAll();
-            return Ok(pro1);
+            return Ok(product);
         }
         [HttpGet]
         [Route("{id}")]
-        public async Task<IActionResult> Getproductpro(int id)
+        public async Task<IActionResult> GetProductById(int id)
         {
             try
             {
-                var pro2 = await mediator.Send(new GetByIdQuery(id));
-                return Ok(pro2);
+                var product = await mediator.Send(new GetByIdQuery(id));
+                return Ok(product);
             }
             catch (ProductNotFoundException)
             {
-                return Ok("product id is invalid");
+                return BadRequest("product id is invalid");
             }
             catch (Exception)
             {
-                return Ok("error");
+                return BadRequest("error");
             }
         }
         [HttpPost]
         [Route("/create")]
-        public async Task<IActionResult> Create([FromBody] Product prod)
+        public async Task<IActionResult> Create([FromBody] Product product)
         {
-            var pro4 = await mediator.Send(new CreateCommand(prod.ProductName, prod.Description, prod.Price, prod.Threshold, prod.StockLevel));
-            return Ok(pro4);
+            try
+            {
+                var _product = await mediator.Send(new CreateCommand(product.ProductName, product.Description, product.Price, product.Threshold, product.StockLevel));
+                return Ok(_product);
+            }
+            catch(Exception)
+            {
+                return BadRequest("Enter correct values");
+            }
 
 
         }
@@ -73,15 +80,15 @@ namespace InventoryManagementSystem.Controllers
             }
             catch (NegativeNumerException)
             {
-                return Ok("entered value should be positive");
+                return BadRequest("entered value should be positive");
             }
             catch (ProductNotFoundException)
             {
-                return Ok("product not found");
+                return BadRequest("product not found");
             }
             catch (Exception)
             {
-                return Ok("error");
+                return BadRequest("error");
             }
         }
         [HttpPost]
@@ -100,41 +107,60 @@ namespace InventoryManagementSystem.Controllers
         [Route("/generatereport")]
         public async Task<IActionResult> GenRep()
         {
-            var k = await mediator.Send(new GenerateReportQuery());
+            var report = await mediator.Send(new GenerateReportQuery());
 
             Email email = new Email();
 
-            await email.Emailmet("dasasaipooja@gmail.com", "Generate report", k);
-            return Ok(k);
+            await email.Emailmet("dasasaipooja@gmail.com", "Generate report", report);
+            return Ok(report);
         }
         [HttpGet]
         [Route("/salestable")]
         public async Task<IActionResult> GetallSales()
         {
-            var sales = await mediator.Send(new GetallsalesQuery());
+            var sales = await mediator.Send(new GetallSalesQuery());
             return Ok(sales);
         }
         [HttpDelete]
         [Route("/delete/{id}")]
-        public async Task<IActionResult> delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            await mediator.Send(new deleteByIdCommand(id));
+            await mediator.Send(new DeleteByIdCommand(id));
             return Ok();
         }
         [HttpGet]
         [Route("/getbyname/{name}")]
-        public async Task<IActionResult> getByName(string name)
+        public async Task<IActionResult> GetByName(string name)
         {
-            var product = await mediator.Send(new GetbynameQuery(name));
-            return Ok(product);
+            try {
+                var product = await mediator.Send(new GetByNameQuery(name));
+                return Ok(product);
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPut]
         [Route("/update/{id}")]
-        public async Task<IActionResult> UpdateProuct(int id, UpdateProductDTO product)
+        public async Task<IActionResult> UpdateProduct(int id, UpdateProductDTO product)
         {
-            var _product = await mediator.Send(new UpdateProductCommand(id, product));
-            return Ok(_product);
+            try {
+                var _product = await mediator.Send(new UpdateProductCommand(id, product));
+                return Ok(_product);
+
+            }
+            catch (ProductNotFoundException)
+            {
+                return BadRequest($"product with id : {id} is not found");
+
+            }
+            catch (Exception)
+            {
+                return BadRequest("enter correct values");
+            }
         }
     }
 }

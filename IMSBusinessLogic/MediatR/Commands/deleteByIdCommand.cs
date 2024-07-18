@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace IMSBusinessLogic.MediatR.Commands
 {
-    public class deleteByIdCommand : IRequest
+    public class DeleteByIdCommand : IRequest
     {
-        public int id { get; set; }
-        public deleteByIdCommand(int id)
+        public int Id { get; set; }
+        public DeleteByIdCommand(int id)
         {
-            this.id = id;
+            this.Id = id;
         }
     }
 }
