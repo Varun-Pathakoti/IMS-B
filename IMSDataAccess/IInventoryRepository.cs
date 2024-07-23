@@ -9,7 +9,7 @@ namespace IMSDataAccess
         Task<List<Sale>> GetAllSale();
 
         Task<Product> GetById(int id);
-        Task<Product> GetByName(String name);
+        Task<List<Product>> GetByName(String name);
         Task DeleteById(int id);
         Task<Product> Create(Product product);
         Task<Product> Update(int id, int stock);

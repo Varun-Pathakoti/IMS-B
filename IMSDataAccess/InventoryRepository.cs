@@ -117,9 +117,10 @@ namespace IMSDataAccess
             _db.SaveChanges();
         }
 
-        public async Task<Product> GetByName(String name)
+        public async Task<List<Product>> GetByName(String name)
         {
-            var product = _db.Products.FirstOrDefault(s=>s.ProductName == name);
+            //var product = _db.Products.FirstOrDefault(s=>s.ProductName == name);
+            var product = _db.Products.Where(p => p.ProductName.Contains(name)).ToList();
             if (product == null)
             {
                 throw new ProductNotFoundException();
