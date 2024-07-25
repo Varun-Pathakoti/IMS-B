@@ -10,6 +10,7 @@ namespace IMSDomain.Entities
         public string ProductName { get; set; }
         [MaxLength(1000)]
         public string Description { get; set; }
+        public string Image { get; set; }
         [Required, Range(0, 1000000, ErrorMessage = "Price cannot be negative.")]
         public float Price { get; set; }
         [Required]

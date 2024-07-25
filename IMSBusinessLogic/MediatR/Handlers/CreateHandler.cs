@@ -19,6 +19,7 @@ namespace IMSBusinessLogic.MediatR.Handlers
             {
                 ProductName = request.ProductName,
                 Description = request.Description,
+                Image=request.Image,
                 Price = request.Price,             
                 Threshold = request.Threshold,
                 StockLevel = request.StockLevel,

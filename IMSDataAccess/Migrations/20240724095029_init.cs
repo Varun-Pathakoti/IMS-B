@@ -19,6 +19,7 @@ namespace IMSDataAccess.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ProductName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
+                    Image = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Price = table.Column<float>(type: "real", nullable: false),
                     Threshold = table.Column<int>(type: "int", nullable: false),
                     StockLevel = table.Column<int>(type: "int", nullable: false)

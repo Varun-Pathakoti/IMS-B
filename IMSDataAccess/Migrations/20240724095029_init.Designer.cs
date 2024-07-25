@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IMSDataAccess.Migrations
 {
     [DbContext(typeof(ProductDbContext))]
-    [Migration("20240705091036_init")]
+    [Migration("20240724095029_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -25,7 +25,7 @@ namespace IMSDataAccess.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("IMSDomain.Product", b =>
+            modelBuilder.Entity("IMSDomain.Entities.Product", b =>
                 {
                     b.Property<int>("ProductID")
                         .ValueGeneratedOnAdd()
@@ -37,6 +37,10 @@ namespace IMSDataAccess.Migrations
                         .IsRequired()
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
+
+                    b.Property<string>("Image")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<float>("Price")
                         .HasColumnType("real");
@@ -56,7 +60,7 @@ namespace IMSDataAccess.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("IMSDomain.Sale", b =>
+            modelBuilder.Entity("IMSDomain.Entities.Sale", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()

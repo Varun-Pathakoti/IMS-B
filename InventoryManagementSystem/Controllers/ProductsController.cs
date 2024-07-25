@@ -58,7 +58,7 @@ namespace InventoryManagementSystem.Controllers
         {
             try
             {
-                var _product = await mediator.Send(new CreateCommand(product.ProductName, product.Description, product.Price, product.Threshold, product.StockLevel));
+                var _product = await mediator.Send(new CreateCommand(product.ProductName, product.Description,product.Image,product.Price, product.Threshold, product.StockLevel));
                 return Ok(_product);
             }
             catch(Exception)

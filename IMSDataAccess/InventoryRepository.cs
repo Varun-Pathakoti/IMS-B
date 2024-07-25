@@ -43,7 +43,7 @@ namespace IMSDataAccess
             Product _product = new Product();
             _product.Description = product.Description;
             _product.ProductName = product.ProductName;
-            // p.ProductID = product.ProductID;
+             _product.Image = product.Image;
             _product.StockLevel = product.StockLevel;
             _product.Price = product.Price;
             _product.Threshold = product.Threshold;
